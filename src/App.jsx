@@ -6,7 +6,10 @@ import LoginContainer from './LoginContainer';
 
 function App() {
   return (
-    <LoginContainer />
+    <>
+      <LoginContainer />
+      <p>안녕하세요</p>
+    </>
   );
 }
 
