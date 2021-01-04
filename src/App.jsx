@@ -2,13 +2,12 @@ import React from 'react';
 
 import './App.css';
 
-import LoginContainer from './LoginContainer';
+import SignUpContainer from './SignUpContainer';
 
 function App() {
   return (
     <>
-      <LoginContainer />
-      <p>안녕하세요</p>
+      <SignUpContainer />
     </>
   );
 }
