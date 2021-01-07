@@ -43,7 +43,7 @@ const Button = styled.button`
   }
 `;
 
-function LoginForm() {
+function LoginForm({ inputs: { email, password }, onChange, onSubmit }) {
   return (
     <Form>
       <Input type="email" id="sign-up-email" name="email" placeholder="Email" required />

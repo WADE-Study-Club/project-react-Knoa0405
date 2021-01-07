@@ -9,13 +9,13 @@ import './App.css';
 
 import SignUpContainer from './SignUpContainer';
 
-import LoginContainer from './LoginContainer';
+import LoginFormContainer from './LoginFormContainer';
 
 function App() {
   return (
     <>
       <Switch>
-        <Route path="/" component={LoginContainer} />
+        <Route path="/" component={LoginFormContainer} />
         <Route path="/sign-up" component={SignUpContainer} />
       </Switch>
     </>

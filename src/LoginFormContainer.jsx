@@ -2,7 +2,10 @@ import React from 'react';
 
 import styled, { keyframes } from 'styled-components';
 
+import axios from 'axios';
+
 import MountainImage from './images/mountain.jpg';
+
 import LoginForm from './LoginForm';
 
 const FadeIn = keyframes`
@@ -55,13 +58,33 @@ const Aside = styled.aside`
   }
 `;
 
-function LoginContainer() {
+function LoginFormContainer() {
+  const inputs = {
+    email: '',
+    password: '',
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    inputs[name] = value;
+  };
+
+  const handleSubmit = () => {
+    //
+    const requestLogin = axios.post();
+  };
+
   return (
     <>
       <FormContainer>
         <Main>
           <MainTitle>Log In</MainTitle>
-          <LoginForm />
+          <LoginForm
+            inputs={inputs}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
         </Main>
         <Aside />
       </FormContainer>
@@ -69,4 +92,4 @@ function LoginContainer() {
   );
 }
 
-export default LoginContainer;
+export default LoginFormContainer;
