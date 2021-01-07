@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import jwt from 'jsonwebtoken';
-import userEvent from '@testing-library/user-event';
 
 const saltRounds = 10;
 
