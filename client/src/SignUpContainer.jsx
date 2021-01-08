@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled, { keyframes } from 'styled-components';
 
+import axios from 'axios';
+
 import MountainImage from './images/mountain.jpg';
+
+import SignUpForm from './SignUpForm';
 
 const FadeIn = keyframes`
   from {
@@ -14,7 +18,7 @@ const FadeIn = keyframes`
   }
 `;
 
-const FormContainer = styled.section`
+const Form = styled.section`
   display: flex;
   width: 50vw;
   height: 80vh;
@@ -24,7 +28,7 @@ const FormContainer = styled.section`
   background : #fff;
 `;
 
-const SignUpMain = styled.main`
+const Main = styled.main`
   display : flex;
   flex-direction: column;
   justify-content: center;
@@ -41,47 +45,6 @@ const MainTitle = styled.h1`
   font-size: 50px;
 `;
 
-const SignUpForm = styled.div`
-  display : flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  max-width: 85%;
-  max-height: 60%;
-`;
-
-const Input = styled.input`
-  font-size: 1rem;
-  padding : 1rem;
-  width: 80%;
-  margin-bottom : 2rem;
-  border : none;
-  border-radius: 1.5rem;
-  box-shadow: 1px 1px 25px 15px #e5e5e5 ;
-`;
-
-const AlertText = styled.p`
-  color : #ff3000;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-  width: 50%;
-  border: none;
-  border-radius: 1.5rem;
-  padding : 0.5rem;
-  background-color: #e5e5e5;
-  font-size : 1.2rem;
-  color: #fff;
-  cursor: pointer;
-  &:hover {
-    background-color: #d3d3d3;
-  }
-`;
-
 const Aside = styled.aside`
   display : flex;
   width: 100%;
@@ -95,23 +58,45 @@ const Aside = styled.aside`
   }
 `;
 
+function postSignUp(inputs) {
+  axios.post('/api/users/register', inputs)
+    .then((response) => console.log(response));
+}
+
 function SignUpContainer() {
+  const inputs = {
+    email: '',
+    password: '',
+  };
+
+  const [inputValues, setValues] = useState(inputs);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setValues({
+      ...inputValues,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    postSignUp(inputValues);
+  };
+
   return (
     <>
-      <FormContainer>
-        <SignUpMain>
+      <Form>
+        <Main>
           <MainTitle>sign-up</MainTitle>
-          <SignUpForm>
-            <Input type="email" id="sign-up-email" name="email" placeholder="Email" required />
-            <Input type="password" id="sign-up-password" name="password" placeholder="Password" required />
-            <AlertText className="alert-text" />
-            <Button>
-              Sign Up
-            </Button>
-          </SignUpForm>
-        </SignUpMain>
+          <SignUpForm
+            inputs={inputValues}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
+        </Main>
         <Aside />
-      </FormContainer>
+      </Form>
     </>
   );
 }

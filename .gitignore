@@ -3,4 +3,4 @@
 # dependencies
 /node_modules
 
-/config/dev.js
+/server/config/dev.js

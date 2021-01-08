@@ -11,12 +11,15 @@ import SignUpContainer from './SignUpContainer';
 
 import LoginFormContainer from './LoginFormContainer';
 
+import LogOut from './LogOut';
+
 function App() {
   return (
     <>
       <Switch>
-        <Route path="/" component={LoginFormContainer} />
-        <Route path="/sign-up" component={SignUpContainer} />
+        <Route path="/log-in" component={LoginFormContainer} />
+        <Route path="/logout" component={LogOut} />
+        <Route exact path="/" component={SignUpContainer} />
       </Switch>
     </>
   );

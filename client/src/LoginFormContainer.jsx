@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled, { keyframes } from 'styled-components';
 
@@ -58,21 +58,30 @@ const Aside = styled.aside`
   }
 `;
 
+function postLogin(inputs) {
+  axios.post('/api/users/register', inputs)
+    .then((response) => console.log(response));
+}
+
 function LoginFormContainer() {
   const inputs = {
     email: '',
     password: '',
   };
 
+  const [inputValues, setValues] = useState(inputs);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    inputs[name] = value;
+    console.log(name, value);
+    setValues({
+      ...inputValues,
+      [name]: value,
+    });
   };
 
   const handleSubmit = () => {
-    //
-    const requestLogin = axios.post();
+    postLogin(inputs);
   };
 
   return (
@@ -81,7 +90,7 @@ function LoginFormContainer() {
         <Main>
           <MainTitle>Log In</MainTitle>
           <LoginForm
-            inputs={inputs}
+            inputs={inputValues}
             onChange={handleChange}
             onSubmit={handleSubmit}
           />

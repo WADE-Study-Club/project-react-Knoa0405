@@ -45,7 +45,7 @@ const Button = styled.button`
   }
 `;
 
-function LoginForm({ inputs: { email, password }, onSubmit, onChange }) {
+function SignUpForm({ inputs: { email, password }, onSubmit, onChange }) {
   return (
     <Form>
       <Input
@@ -68,7 +68,12 @@ function LoginForm({ inputs: { email, password }, onSubmit, onChange }) {
       />
       <AlertText className="alert-text" />
       <Button onClick={onSubmit}>
-        <Link to="/logout" style={{ textDecoration: 'none', color: '#FFF' }}>
+        <Link
+          to="/log-in"
+          style={{
+            textDecoration: 'none', color: '#FFF',
+          }}
+        >
           Log In
         </Link>
       </Button>
@@ -76,4 +81,4 @@ function LoginForm({ inputs: { email, password }, onSubmit, onChange }) {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;
