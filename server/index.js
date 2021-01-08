@@ -27,7 +27,6 @@ mongoose.connect(config.mongoURI, {
 }).then(() => log('MongoDB connected'))
   .catch((err) => error(err));
 
-const port = 3000;
 
 app.get('/', (req, res) => res.send('Hello World!!'));
 
@@ -85,5 +84,7 @@ app.get('/api/users/logout', auth, (req, res) => {
       });
     });
 });
+
+const port = 5000;
 
 app.listen(port, () => log(`Example app listening on port ${port}`));
