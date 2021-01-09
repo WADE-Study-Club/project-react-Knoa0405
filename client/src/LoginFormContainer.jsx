@@ -58,22 +58,34 @@ const Aside = styled.aside`
   }
 `;
 
-function postLogin(inputs) {
-  axios.post('/api/users/register', inputs)
-    .then((response) => console.log(response));
-}
-
 function LoginFormContainer() {
   const inputs = {
     email: '',
     password: '',
   };
 
+  const [loginCheck, setLoginCheck] = useState({
+    loginSuccess: false,
+    message: '',
+  });
+
+  function postLogin({ inputs: loginInputs }) {
+    axios.post('/api/users/login', loginInputs)
+      .then((response) => {
+        console.log(response);
+        setLoginCheck({
+          ...loginCheck,
+          loginSuccess: response.data?.loginSuccess,
+          message: response.data?.message,
+        });
+      });
+  }
+
   const [inputValues, setValues] = useState(inputs);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     setValues({
       ...inputValues,
       [name]: value,
@@ -81,7 +93,12 @@ function LoginFormContainer() {
   };
 
   const handleSubmit = () => {
-    postLogin(inputs);
+    postLogin({ inputs: inputValues });
+    setLoginCheck({
+      ...loginCheck,
+      loginSuccess: false,
+      message: '',
+    });
   };
 
   return (
@@ -93,6 +110,7 @@ function LoginFormContainer() {
             inputs={inputValues}
             onChange={handleChange}
             onSubmit={handleSubmit}
+            loginCheck={loginCheck}
           />
         </Main>
         <Aside />

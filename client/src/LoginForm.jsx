@@ -45,7 +45,9 @@ const Button = styled.button`
   }
 `;
 
-function LoginForm({ inputs: { email, password }, onSubmit, onChange }) {
+function LoginForm({
+  inputs: { email, password }, onSubmit, onChange, loginCheck,
+}) {
   return (
     <Form>
       <Input
@@ -66,11 +68,13 @@ function LoginForm({ inputs: { email, password }, onSubmit, onChange }) {
         onChange={onChange}
         required
       />
-      <AlertText className="alert-text" />
+      <AlertText>{loginCheck.message}</AlertText>
       <Button onClick={onSubmit}>
-        <Link to="/logout" style={{ textDecoration: 'none', color: '#FFF' }}>
-          Log In
-        </Link>
+        {loginCheck.loginSuccess ? (
+          <Link to="/logout" style={{ textDecoration: 'none', color: '#FFF' }}>
+            Log In
+          </Link>
+        ) : 'Log In'}
       </Button>
     </Form>
   );
