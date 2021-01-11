@@ -70,11 +70,9 @@ function LoginForm({
       />
       <AlertText>{loginCheck.message}</AlertText>
       <Button onClick={onSubmit}>
-        {loginCheck.loginSuccess ? (
-          <Link to="/main" style={{ textDecoration: 'none', color: '#FFF' }}>
-            Log In
-          </Link>
-        ) : 'Log In'}
+        <Link to="/main" style={{ textDecoration: 'none', color: '#FFF' }}>
+          Log In
+        </Link>
       </Button>
     </Form>
   );

@@ -53,5 +53,6 @@ module.exports = {
     'linebreak-style': 'off',
     'no-proto': 'off',
     'import/extensions': 'off',
+    'no-underscore-dangle': 'off',
   },
 };
