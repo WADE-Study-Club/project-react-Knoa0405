@@ -58,30 +58,33 @@ const Aside = styled.aside`
   }
 `;
 
-function postSignUp(inputs) {
-  axios.post('/api/users/register', inputs)
-    .then((response) => console.log(response));
-}
-
 function SignUpContainer() {
   const inputs = {
     email: '',
     password: '',
   };
 
+  const [validSignUp, setValidSignUp] = useState(true);
+
   const [inputValues, setValues] = useState(inputs);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setValues({
       ...inputValues,
       [name]: value,
     });
   };
 
+  function postSignUp({ inputs: input }) {
+    axios.post('/api/users/register', input)
+      .then((response) => {
+        setValidSignUp(response.data.success);
+      });
+  }
+
   const handleSubmit = () => {
-    postSignUp(inputValues);
+    postSignUp({ inputs: inputValues });
   };
 
   return (
@@ -93,7 +96,9 @@ function SignUpContainer() {
             inputs={inputValues}
             onChange={handleChange}
             onSubmit={handleSubmit}
+            validSignUp={validSignUp}
           />
+          {validSignUp ? null : <p>이미 존재하는 이메일입니다</p>}
         </Main>
         <Aside />
       </Form>

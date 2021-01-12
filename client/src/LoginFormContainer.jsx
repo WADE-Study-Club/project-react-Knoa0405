@@ -4,6 +4,8 @@ import styled, { keyframes } from 'styled-components';
 
 import axios from 'axios';
 
+import { Link } from 'react-router-dom';
+
 import MountainImage from './images/mountain.jpg';
 
 import LoginForm from './LoginForm';
@@ -112,6 +114,8 @@ function LoginFormContainer() {
             onSubmit={handleSubmit}
             loginCheck={loginCheck}
           />
+          <p>Don&lsquo;t you have a account?</p>
+          <Link to="/sign-up">Sign Up</Link>
         </Main>
         <Aside />
       </FormContainer>
