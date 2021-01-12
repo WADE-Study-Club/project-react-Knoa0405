@@ -2,24 +2,39 @@ import React from 'react';
 
 import { Route, Redirect } from 'react-router-dom';
 
+import { saveItem, loadItem } from './service/storage';
+
 function AuthRoute({
   user, component, path,
 }) {
-  if (user.isAuth) {
+  const loadUser = loadItem('user');
+
+  if (user.isAuth && loadUser) {
     return (
       <Route path={path} component={component} />
     );
   }
 
-  return (
-    <Route
-      render={(props) => (
-        <Redirect
-          to={{ pathname: '/sign-up', state: { from: props.location } }}
-        />
-      )}
-    />
-  );
+  if (!user.isAuth) {
+    saveItem({ key: 'user', value: { isAuth: true } });
+    return (
+      <Route path={path} component={component} />
+    );
+  }
+
+  if (loadUser.isAuth) {
+    return (
+      <Route
+        render={(props) => (
+          <Redirect
+            to={{ pathname: '/main', state: { from: props.location } }}
+          />
+        )}
+      />
+    );
+  }
+
+  return null;
 }
 
 export default AuthRoute;

@@ -19,12 +19,22 @@ import MainPage from './MainPage';
 
 import AuthRoute from './AuthRoute';
 
+import { saveItem } from './service/storage';
+
 function App() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
     Axios.get('/api/users/auth').then((response) => {
       setUser(response?.data);
+      saveItem({
+        key: 'user',
+        value: {
+          id: response?.data?._id,
+          isAuth: response?.data?.isAuth,
+          succeess: response?.data?.success,
+        },
+      });
     });
   }, []);
 

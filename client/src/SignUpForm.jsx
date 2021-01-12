@@ -45,7 +45,9 @@ const Button = styled.button`
   }
 `;
 
-function SignUpForm({ inputs: { email, password }, onSubmit, onChange }) {
+function SignUpForm({
+  inputs: { email, password }, onSubmit, onChange,
+}) {
   return (
     <Form>
       <Input
@@ -69,13 +71,12 @@ function SignUpForm({ inputs: { email, password }, onSubmit, onChange }) {
       <AlertText className="alert-text" />
       <Button onClick={onSubmit}>
         <Link
-          to="/log-in"
+          to="/"
           style={{
             textDecoration: 'none', color: '#FFF',
           }}
-        >
-          Log In
-        </Link>
+        />
+        Log In
       </Button>
     </Form>
   );
