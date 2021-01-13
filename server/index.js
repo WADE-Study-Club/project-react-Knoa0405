@@ -27,11 +27,25 @@ mongoose.connect(config.mongoURI, {
 }).then(() => log('MongoDB connected'))
   .catch((err) => error(err));
 
-
-app.get('/', (req, res) => res.send('Hello World!!'));
+app.post('/api/users/register/dupliEmailCheck', (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (user) {
+      return res.json({
+        signUpSuccess: false,
+        message: '이미 존재하는 이메일입니다.',
+      });
+    } else {
+      return res.json({
+        signUpSuccess: true,
+        message: '사용 가능한 이메일입니다.',
+      });
+    }
+  });
+});
 
 app.post('/api/users/register', (req, res) => {
   const user = new User(req.body);
+
   user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({

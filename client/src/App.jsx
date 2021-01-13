@@ -27,6 +27,7 @@ function App() {
   useEffect(() => {
     Axios.get('/api/users/auth').then((response) => {
       setUser(response?.data);
+
       saveItem({
         key: 'user',
         value: {
