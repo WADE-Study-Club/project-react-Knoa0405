@@ -64,27 +64,44 @@ function SignUpContainer() {
     password: '',
   };
 
-  const [validSignUp, setValidSignUp] = useState(true);
+  const [validEmail, setValidEmail] = useState('');
 
   const [inputValues, setValues] = useState(inputs);
 
+  const regexText = /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z0-9-]+/;
+
+  function checkEmail({ email }) {
+    axios.post('/api/users/register/dupliEmailCheck', { email })
+      .then((response) => {
+        setValidEmail(response?.data?.message);
+      });
+  }
+
+  function postSignUp({ inputs: input }) {
+    axios.post('/api/users/register', input);
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const values = {
+      [name]: value,
+    };
+
     setValues({
       ...inputValues,
       [name]: value,
     });
+
+    if (regexText.test(values.email)) {
+      checkEmail({ email: values.email });
+    }
   };
 
-  function postSignUp({ inputs: input }) {
-    axios.post('/api/users/register', input)
-      .then((response) => {
-        setValidSignUp(response.data.success);
-      });
-  }
-
   const handleSubmit = () => {
-    postSignUp({ inputs: inputValues });
+    if (validEmail.indexOf('사용') !== -1) {
+      postSignUp({ inputs: inputValues });
+    }
   };
 
   return (
@@ -96,9 +113,9 @@ function SignUpContainer() {
             inputs={inputValues}
             onChange={handleChange}
             onSubmit={handleSubmit}
-            validSignUp={validSignUp}
+            validEmail={validEmail}
           />
-          {validSignUp ? null : <p>이미 존재하는 이메일입니다</p>}
+          {validEmail}
         </Main>
         <Aside />
       </Form>

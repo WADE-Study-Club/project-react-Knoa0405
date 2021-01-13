@@ -46,7 +46,7 @@ const Button = styled.button`
 `;
 
 function SignUpForm({
-  inputs: { email, password }, onSubmit, onChange,
+  inputs: { email, password }, onSubmit, onChange, validEmail,
 }) {
   return (
     <Form>
@@ -70,13 +70,17 @@ function SignUpForm({
       />
       <AlertText className="alert-text" />
       <Button onClick={onSubmit}>
-        <Link
-          to="/"
-          style={{
-            textDecoration: 'none', color: '#FFF',
-          }}
-        />
-        Log In
+        {validEmail.indexOf('사용') !== -1 ? (
+          <Link
+            to="/"
+            style={{
+              textDecoration: 'none', color: '#FFF',
+            }}
+          >
+            {' '}
+            Log in
+          </Link>
+        ) : 'Log In'}
       </Button>
     </Form>
   );
