@@ -78,9 +78,9 @@ function SignUpForm({
             }}
           >
             {' '}
-            Log in
+            Sign In
           </Link>
-        ) : 'Log In'}
+        ) : 'Sign In'}
       </Button>
     </Form>
   );
