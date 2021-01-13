@@ -13,7 +13,7 @@ import SignUpContainer from './SignUpContainer';
 
 import LoginFormContainer from './LoginFormContainer';
 
-import LogOut from './LogOut';
+import AddPage from './AddPage';
 
 import MainPage from './MainPage';
 
@@ -43,7 +43,7 @@ function App() {
     <>
       <Switch>
         <Route path="/sign-up" component={SignUpContainer} />
-        <Route path="/logout" component={LogOut} />
+        <Route path="/add" component={AddPage} />
         <AuthRoute user={user} path="/main" component={MainPage} />
         <AuthRoute user={user} path="/" component={LoginFormContainer} />
       </Switch>

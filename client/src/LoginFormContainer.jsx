@@ -74,7 +74,6 @@ function LoginFormContainer() {
   function postLogin({ inputs: loginInputs }) {
     axios.post('/api/users/login', loginInputs)
       .then((response) => {
-        console.log(response);
         setLoginCheck({
           ...loginCheck,
           loginSuccess: response.data?.loginSuccess,
