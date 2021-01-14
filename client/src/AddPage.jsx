@@ -14,12 +14,39 @@ const AddWrapper = styled.div`
   align-items: center;
 `;
 
-const SearchInput = styled.input`
+const SearchWrapper = styled.div`
+  display : flex;
+  position : relative;
+  width : 80%;
+`;
 
+const SearchInput = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 3rem;
+  outline: none;
+  border: none;
+  box-shadow: 0 0 2rem 0.15rem rgba(0, 0, 255, 0.1);
+  font-size: 1rem;
+  color: #131F69;
+  text-transform: uppercase;
 `;
 
 const SearchButton = styled.button`
-
+  cursor: pointer;
+  position: absolute;
+  background-color: #31feae;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  right: 0;
+  top: -0.35rem;
+  outline: none;
+  border: none;
+  z-index: 5;
+  box-shadow: 0 0 2rem 0.15rem rgba(0, 0, 255, 0.1);
+  color : #fff;
 `;
 
 const MainCard = styled.div`
@@ -127,11 +154,14 @@ function AddPage() {
 
     getCityWeather({ city });
   }, []);
+
   return (
     <MainCard>
       <AddWrapper>
-        <SearchInput onChange={handleChange} value={input} />
-        <SearchButton onClick={handleClick}>확인</SearchButton>
+        <SearchWrapper>
+          <SearchInput onChange={handleChange} value={input} />
+          <SearchButton onClick={handleClick}>확인</SearchButton>
+        </SearchWrapper>
       </AddWrapper>
       <CityWrapper>
         <CityHeader>
