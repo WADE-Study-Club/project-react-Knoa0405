@@ -118,6 +118,8 @@ const CityWeather = styled.span`
   font-size : 1.5rem;
 `;
 
+console.log(process.env.REACT_APP_WEATHER_API);
+
 function AddPage() {
   const [cityName, setCityName] = useState('');
 
@@ -128,7 +130,7 @@ function AddPage() {
   const [temp, setTemp] = useState(273.5);
 
   function getCityWeather({ city }) {
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ab438ddf499d854dccd639afe28f0919`;
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_WEATHER_API}`;
 
     Axios.get(url).then((response) => {
       setTemp(response?.data?.main?.temp);
@@ -159,7 +161,7 @@ function AddPage() {
     <MainCard>
       <AddWrapper>
         <SearchWrapper>
-          <SearchInput onChange={handleChange} value={input} />
+          <SearchInput onChange={handleChange} value={input} placeholder="SERACH CITY" />
           <SearchButton onClick={handleClick}>확인</SearchButton>
         </SearchWrapper>
       </AddWrapper>
