@@ -2,9 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import Axios from 'axios';
 
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 import WeatherComponent from './WeatherComponent';
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1
+  }
+  to {
+    opacity: 0
+  }
+`;
 
 const AddWrapper = styled.div`
   position: relative;
@@ -45,8 +54,13 @@ const SearchCities = styled.ul`
   width: 100%;
   border : 1px solid;
   border-radius : 15px;
+  opacity : ${(props) => props.opacity};
   padding: 0;
   margin : 0;
+  ${(props) => props.opacity === 0
+    && css`
+  animation : ${fadeOut} 0.5s;
+  `}
 `;
 
 const SearchCity = styled.button`
@@ -171,6 +185,8 @@ function AddPage() {
 
   const [isToggleOn, setToggleOn] = useState(false);
 
+  const [opacity, setOpacity] = useState(1);
+
   const cities = [
     { id: 1, name: 'Dubai' },
     { id: 2, name: 'Seoul' },
@@ -195,16 +211,18 @@ function AddPage() {
 
   function handleSelectCity(name) {
     setInput(name);
-
-    setToggleOn(!isToggleOn);
   }
 
-  // function handleBlur() {
-  //   setToggleOn(!isToggleOn);
-  // }
+  function handleBlur() {
+    setOpacity(0);
+
+    setTimeout(() => setToggleOn(false), 500);
+  }
 
   function handleFocus() {
     setToggleOn(true);
+
+    setOpacity(1);
   }
 
   function handleClick() {
@@ -228,10 +246,13 @@ function AddPage() {
               onChange={handleChange}
               value={input}
               onFocus={handleFocus}
+              onBlur={handleBlur}
               placeholder="SERACH CITY"
             />
-            {isToggleOn ? (
-              <SearchCities>
+            {isToggleOn && (
+              <SearchCities
+                opacity={opacity}
+              >
                 {cities.map(({ id, name }) => (
                   <SearchCity
                     key={id}
@@ -241,7 +262,7 @@ function AddPage() {
                   </SearchCity>
                 ))}
               </SearchCities>
-            ) : null}
+            )}
             <SearchButton onClick={handleClick}>확인</SearchButton>
           </SearchContainer>
         </SearchWrapper>
