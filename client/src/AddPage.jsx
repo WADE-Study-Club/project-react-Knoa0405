@@ -215,6 +215,8 @@ function AddPage() {
 
   function handleBlur() {
     setOpacity(0);
+
+    setTimeout(() => setToggleOn(false), 500);
   }
 
   function handleFocus() {
@@ -239,13 +241,12 @@ function AddPage() {
     <MainCard>
       <AddWrapper>
         <SearchWrapper>
-          <SearchContainer
-            onFocus={handleFocus}
-          >
+          <SearchContainer>
             <SearchInput
               onChange={handleChange}
-              onBlur={handleBlur}
               value={input}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               placeholder="SERACH CITY"
             />
             {isToggleOn && (
@@ -255,7 +256,6 @@ function AddPage() {
                 {cities.map(({ id, name }) => (
                   <SearchCity
                     key={id}
-                    onBlur={handleBlur}
                     onClick={() => handleSelectCity(name)}
                   >
                     {name}
