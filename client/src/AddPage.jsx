@@ -11,18 +11,16 @@ const AddWrapper = styled.div`
   display: flex;
   flex: 1 1;
   justify-content: center;
-  align-items: center;
+  padding-top : 1rem;
 `;
 
 const SearchWrapper = styled.div`
   display : flex;
-  position : relative;
-  width : 80%;
+  justify-content : center;
+  width: 80%;
 `;
 
 const SearchInput = styled.input`
-  box-sizing: border-box;
-  width: 100%;
   padding: 1.5rem;
   border-radius: 3rem;
   outline: none;
@@ -33,9 +31,53 @@ const SearchInput = styled.input`
   text-transform: uppercase;
 `;
 
+const SearchContainer = styled.div`
+  position : relative;
+  display : flex;
+  flex-direction : column;
+  width : 100%;
+  height : 30%;
+`;
+
+const SearchCities = styled.ul`
+  background-color : #fff;
+  top : 3.5rem;
+  width: 100%;
+  border : 1px solid;
+  border-radius : 15px;
+  padding: 0;
+  margin : 0;
+`;
+
+const SearchCity = styled.button`
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  border: none;
+  cursor : pointer;
+  list-style : none;
+  padding-left : 1rem;
+  padding-top : 1rem;
+  padding-bottom : 1rem;
+  border-bottom : 1px solid;
+  background-color : #fff;
+  &:hover {
+    background-color : #e5e5e5;
+  }
+  &:first-child {
+    border-top-left-radius : 15px;
+    border-top-right-radius : 15px;
+  }
+  &:last-child {
+    border-bottom-left-radius : 15px;
+    border-bottom-right-radius : 15px;
+    border-bottom: none;
+  }
+`;
+
 const SearchButton = styled.button`
+  position : absolute;
   cursor: pointer;
-  position: absolute;
   background-color: #31feae;
   height: 5rem;
   width: 5rem;
@@ -127,8 +169,16 @@ function AddPage() {
 
   const [temp, setTemp] = useState(273.5);
 
+  const [isToggleOn, setToggleOn] = useState(false);
+
+  const cities = [
+    { id: 1, name: 'Dubai' },
+    { id: 2, name: 'Seoul' },
+    { id: 3, name: 'Japan' },
+  ];
+
   function getCityWeather({ city }) {
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ab438ddf499d854dccd639afe28f0919`;
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_WEATHER_API}`;
 
     Axios.get(url).then((response) => {
       setTemp(response?.data?.main?.temp);
@@ -141,6 +191,20 @@ function AddPage() {
     const { value } = e.target;
 
     setInput(value);
+  }
+
+  function handleSelectCity(name) {
+    setInput(name);
+
+    setToggleOn(!isToggleOn);
+  }
+
+  // function handleBlur() {
+  //   setToggleOn(!isToggleOn);
+  // }
+
+  function handleFocus() {
+    setToggleOn(true);
   }
 
   function handleClick() {
@@ -159,8 +223,27 @@ function AddPage() {
     <MainCard>
       <AddWrapper>
         <SearchWrapper>
-          <SearchInput onChange={handleChange} value={input} />
-          <SearchButton onClick={handleClick}>확인</SearchButton>
+          <SearchContainer>
+            <SearchInput
+              onChange={handleChange}
+              value={input}
+              onFocus={handleFocus}
+              placeholder="SERACH CITY"
+            />
+            {isToggleOn ? (
+              <SearchCities>
+                {cities.map(({ id, name }) => (
+                  <SearchCity
+                    key={id}
+                    onClick={() => handleSelectCity(name)}
+                  >
+                    {name}
+                  </SearchCity>
+                ))}
+              </SearchCities>
+            ) : null}
+            <SearchButton onClick={handleClick}>확인</SearchButton>
+          </SearchContainer>
         </SearchWrapper>
       </AddWrapper>
       <CityWrapper>
