@@ -193,17 +193,19 @@ const CityWeather = styled.span`
 `;
 
 function AddPage() {
-  const [cityName, setCityName] = useState('');
-
   const [input, setInput] = useState('');
 
-  const [weather, setWeather] = useState('');
-
   const [temp, setTemp] = useState(273.5);
+  const [cityName, setCityName] = useState('');
+  const [weather, setWeather] = useState('');
 
   const [isToggleOn, setToggleOn] = useState(false);
 
   const [opacity, setOpacity] = useState(1);
+
+  const [currentTemp, setCurrentTemp] = useState(273.5);
+  const [currentCityName, setCurrentCityName] = useState('');
+  const [currentCityWeather, setCurrentCityWeather] = useState('');
 
   const cities = [
     { id: 1, name: 'Dubai' },
@@ -211,14 +213,25 @@ function AddPage() {
     { id: 3, name: 'Japan' },
   ];
 
-  function getCityWeather({ city }) {
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_WEATHER_API}`;
+  function getCityWeather({ currentCity, city }) {
+    if (city) {
+      const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_WEATHER_API}`;
 
-    Axios.get(url).then((response) => {
-      setTemp(response?.data?.main?.temp);
-      setCityName(response?.data?.name);
-      setWeather(response?.data?.weather[0]?.main);
-    });
+      Axios.get(url).then((response) => {
+        setTemp(response?.data?.main?.temp);
+        setCityName(response?.data?.name);
+        setWeather(response?.data?.weather[0]?.main);
+      });
+    }
+    if (currentCity) {
+      const currentUrl = `http://api.openweathermap.org/data/2.5/weather?q=${currentCity}&appid=${process.env.REACT_APP_WEATHER_API}`;
+
+      Axios.get(currentUrl).then((response) => {
+        setCurrentTemp(response?.data?.main?.temp);
+        setCurrentCityName(response?.data?.name);
+        setCurrentCityWeather(response?.data?.weather[0]?.main);
+      });
+    }
   }
 
   function handleChange(e) {
@@ -227,8 +240,10 @@ function AddPage() {
     setInput(value);
   }
 
-  function handleSelectCity(name) {
+  function handleSelectCity(name = '') {
     setInput(name);
+
+    getCityWeather({ currentCity: name });
   }
 
   function handleBlur() {
@@ -284,7 +299,15 @@ function AddPage() {
             <SearchButton onClick={handleClick}>확인</SearchButton>
           </SearchContainer>
         </SearchWrapper>
-        <WeatherCard />
+        <WeatherCard>
+          <WeatherComponent weather={currentCityWeather} />
+          <CityTemp>
+            {Math.floor((currentTemp - 273.15))}
+            °
+          </CityTemp>
+          <CityName>{currentCityName}</CityName>
+          <CityWeather>{currentCityWeather}</CityWeather>
+        </WeatherCard>
       </AddWrapper>
       <CityWrapper>
         <CityHeader>
