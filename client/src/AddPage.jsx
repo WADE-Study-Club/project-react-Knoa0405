@@ -18,9 +18,27 @@ const fadeOut = keyframes`
 const AddWrapper = styled.div`
   position: relative;
   display: flex;
+  flex-direction : column;
   flex: 1 1;
-  justify-content: center;
-  padding-top : 1rem;
+  justify-content: space-between;
+  align-items : center;
+  padding-top : 2rem;
+`;
+
+const WeatherCard = styled.section`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
+  justify-items: center;
+  padding: 2rem;
+  margin: 2rem;
+  width: 19rem;
+  height: 30rem;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 1.75rem;
+  animation: slideup 1s ease-in-out, fadein 1.25s ease-in-out 0ms 1;
 `;
 
 const SearchWrapper = styled.div`
@@ -52,8 +70,8 @@ const SearchCities = styled.ul`
   background-color : #fff;
   top : 3.5rem;
   width: 100%;
-  border : 1px solid;
   border-radius : 15px;
+  box-shadow: 0 0 2rem 0.5rem rgba(0, 0, 255, 0.1);
   opacity : ${(props) => props.opacity};
   padding: 0;
   margin : 0;
@@ -73,10 +91,10 @@ const SearchCity = styled.button`
   padding-left : 1rem;
   padding-top : 1rem;
   padding-bottom : 1rem;
-  border-bottom : 1px solid;
+  border-bottom : 1px solid #e5e5e5;
   background-color : #fff;
   &:hover {
-    background-color : #e5e5e5;
+    background-color : rgba(0, 0, 255, 0.1);
   }
   &:first-child {
     border-top-left-radius : 15px;
@@ -266,6 +284,7 @@ function AddPage() {
             <SearchButton onClick={handleClick}>확인</SearchButton>
           </SearchContainer>
         </SearchWrapper>
+        <WeatherCard />
       </AddWrapper>
       <CityWrapper>
         <CityHeader>
