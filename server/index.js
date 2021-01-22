@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 
 import User from './models/User.js';
 
+import City from './models/City.js';
+
 import config from './config/key.js';
 
 import auth from './middleware/auth.js';
@@ -26,6 +28,36 @@ mongoose.connect(config.mongoURI, {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false,
 }).then(() => log('MongoDB connected'))
   .catch((err) => error(err));
+
+app.post('/api/userCities', (req, res) => {
+  City.findOne({ name: req.body.name }, (err, city) => {
+    if (city) {
+      return res.json({
+        registerSuccess: false,
+        message: '이미 등록된 도시입니다.',
+      });
+    } else {
+      const city = new City(req.body);
+
+      city.save((err, cityInfo) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({
+          registerSuccess: true,
+          city,
+          message: '해당 도시가 등록되었습니다.',
+        })
+      });
+    }
+  })
+});
+
+app.get('/api/userCities', (req, res) => {
+  City.find({}, (err, cities) => {
+    return res.json({
+      cities,
+    });
+  });
+})
 
 app.post('/api/users/register/dupliEmailCheck', (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
