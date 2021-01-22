@@ -4,7 +4,11 @@ import Axios from 'axios';
 
 import styled, { keyframes, css } from 'styled-components';
 
+import { Route } from 'react-router-dom';
+
 import WeatherComponent from './WeatherComponent';
+
+import WeatherCardContainer from './WeatherCardContainer';
 
 const fadeOut = keyframes`
   from {
@@ -12,24 +16,6 @@ const fadeOut = keyframes`
   }
   to {
     opacity: 0
-  }
-`;
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0
-  }
-  to {
-    opacity: 1
-  }
-`;
-
-const slideUp = keyframes`
-  from {
-    transform:  translate(0px,100px);
-  }
-  to {
-    transform:  translate(0px,0px);
   }
 `;
 
@@ -43,20 +29,20 @@ const AddWrapper = styled.div`
   padding-top : 2rem;
 `;
 
-const WeatherCard = styled.section`
-  display : ${(props) => (props.cityName === '' ? 'none' : 'grid')};
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
-  justify-items: center;
-  padding: 2rem;
-  margin: 2rem;
-  width: 19rem;
-  height: 30rem;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 1.75rem;
-  animation: ${slideUp} 1s ease-in-out, ${fadeIn} 1.25s ease-in-out 0ms 1;
+const AddButton = styled.button`
+  cursor : pointer;
+  margin-bottom : 3rem;
+  outline: none;
+  border: none;
+  background-color : #523fba;
+  color : #fff;
+  font-weight : 700;
+  font-size : 1rem;
+  border-radius : 2rem;
+  padding : 20px;
+  &:hover {
+    background-color : #09de50;
+  }
 `;
 
 const SearchWrapper = styled.div`
@@ -85,8 +71,9 @@ const SearchContainer = styled.div`
 `;
 
 const SearchCities = styled.ul`
+  position : absolute;
   background-color : #fff;
-  top : 3.5rem;
+  top : 4.2rem;
   width: 100%;
   border-radius : 15px;
   box-shadow: 0 0 2rem 0.5rem rgba(0, 0, 255, 0.1);
@@ -123,6 +110,7 @@ const SearchCity = styled.button`
     border-bottom-right-radius : 15px;
     border-bottom: none;
   }
+
 `;
 
 const SearchButton = styled.button`
@@ -282,6 +270,17 @@ function AddPage() {
     getCityWeather({ city });
   }
 
+  function handleAddCity({ history }) {
+    Axios.post('/api/userCities', {
+      name: currentCityName,
+      temp: currentTemp,
+      weather: currentCityWeather,
+    })
+      .then((response) => console.log(response));
+
+    history.push('/main');
+  }
+
   useEffect(() => {
     const city = 'seoul';
 
@@ -317,15 +316,21 @@ function AddPage() {
             <SearchButton onClick={handleClick}>확인</SearchButton>
           </SearchContainer>
         </SearchWrapper>
-        <WeatherCard cityName={currentCityName}>
-          <WeatherComponent weather={currentCityWeather} />
-          <CityTemp>
-            {Math.floor((currentTemp - 273.15))}
-            °
-          </CityTemp>
-          <CityName>{currentCityName}</CityName>
-          <CityWeather>{currentCityWeather}</CityWeather>
-        </WeatherCard>
+        <WeatherCardContainer
+          currentTemp={currentTemp}
+          currentCityWeather={currentCityWeather}
+          currentCityName={currentCityName}
+        />
+        <Route
+          render={({ history }) => (
+            <AddButton
+              onClick={() => handleAddCity({ history })}
+              cityName={currentCityName}
+            >
+              ADD CITY +
+            </AddButton>
+          )}
+        />
       </AddWrapper>
       <CityWrapper>
         <CityHeader>

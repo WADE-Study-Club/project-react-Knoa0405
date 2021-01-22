@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled, { keyframes } from 'styled-components';
 
+import Axios from 'axios';
+
 import AddCardSvg from './svg/AddCardSvg';
+
+import WeatherCardContainer from './WeatherCardContainer';
 
 const fadeIn = keyframes`
   from {
@@ -39,16 +43,38 @@ const AddCard = styled.a`
   color: #443282;
 `;
 
+const MainPageContainer = styled.section`
+  display : grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
 function MainPage({ history }) {
+  const [userCities, setUserCities] = useState([]);
+
   function handleClick() {
     history.push('/add');
   }
 
+  useEffect(() => {
+    Axios.get('/api/userCities').then((response) => {
+      setUserCities(Object.values(response?.data?.cities));
+    });
+  }, []);
+
   return (
-    <AddCard onClick={handleClick}>
-      <p>ADD CITY</p>
-      <AddCardSvg />
-    </AddCard>
+    <MainPageContainer>
+      {userCities.map(({ name, temp, weather }) => (
+        <WeatherCardContainer
+          currentCityName={name}
+          currentTemp={temp}
+          currentCityWeather={weather}
+        />
+      ))}
+      <AddCard onClick={handleClick}>
+        <p>ADD CITY</p>
+        <AddCardSvg />
+      </AddCard>
+    </MainPageContainer>
   );
 }
 
