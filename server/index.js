@@ -28,7 +28,7 @@ mongoose.connect(config.mongoURI, {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false,
 }).then(() => log('MongoDB connected'))
   .catch((err) => error(err));
-
+// 유저별로 정보를 다르게 받아서 뿌려줘야한다. 지금은 그냥 전부 cities collections 에 위치해 있다.
 app.post('/api/userCities', (req, res) => {
   City.findOne({ name: req.body.name }, (err, city) => {
     if (city) {
