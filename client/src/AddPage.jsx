@@ -213,11 +213,23 @@ function AddPage() {
   const [currentCityName, setCurrentCityName] = useState('');
   const [currentCityWeather, setCurrentCityWeather] = useState('');
 
-  const cities = [
-    { id: 1, name: 'Dubai' },
-    { id: 2, name: 'Seoul' },
-    { id: 3, name: 'Japan' },
-  ];
+  const [cities, setCities] = useState([]);
+
+  function getCityName() {
+    Axios.request({
+      method: 'GET',
+      params: { limit: '10' },
+      url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+      headers: {
+        'x-rapidapi-key': process.env.REACT_APP_GEO_API,
+        'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com',
+      },
+    }).then((response) => {
+      setCities(response?.data?.data);
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
 
   function getCityWeather({ currentCity, city }) {
     if (city) {
@@ -285,6 +297,8 @@ function AddPage() {
     const city = 'seoul';
 
     getCityWeather({ city });
+
+    getCityName();
   }, []);
 
   return (
