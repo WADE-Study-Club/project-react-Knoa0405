@@ -30,6 +30,7 @@ const AddWrapper = styled.div`
 `;
 
 const AddButton = styled.button`
+  display : ${(props) => (props.cityName ? 'inline-block' : 'none')};
   cursor : pointer;
   margin-bottom : 3rem;
   outline: none;
